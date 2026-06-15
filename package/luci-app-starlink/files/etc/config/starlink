@@ -1,0 +1,4 @@
+config starlink 'main'
+	option host '192.168.100.1'
+	option port '9200'
+	option timeout '8'

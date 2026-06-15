@@ -1,0 +1,17 @@
+{
+	"luci-app-starlink": {
+		"description": "Grant access to Starlink dish telemetry",
+		"read": {
+			"ubus": {
+				"starlink.dish": [ "config", "status", "diagnostics", "history", "obstruction_map", "alignment", "dump" ]
+			},
+			"uci": [ "starlink" ]
+		},
+		"write": {
+			"ubus": {
+				"starlink.dish": [ "reboot", "stow", "unstow" ]
+			},
+			"uci": [ "starlink" ]
+		}
+	}
+}

@@ -1,0 +1,60 @@
+#!/bin/sh
+
+call_starlink() {
+	/usr/bin/starlink-dish "$1"
+}
+
+case "$1" in
+	list)
+		cat <<'EOF'
+{
+	"config": {},
+	"status": {},
+	"diagnostics": {},
+	"history": {},
+	"obstruction_map": {},
+	"alignment": {},
+	"dump": {},
+	"reboot": {},
+	"stow": {},
+	"unstow": {}
+}
+EOF
+		;;
+	call)
+		case "$2" in
+			config)
+				call_starlink config
+				;;
+			status)
+				call_starlink status
+				;;
+			diagnostics)
+				call_starlink diagnostics
+				;;
+			history)
+				call_starlink history
+				;;
+			obstruction_map)
+				call_starlink obstruction-map
+				;;
+			alignment)
+				call_starlink alignment
+				;;
+			dump)
+				call_starlink dump
+				;;
+			reboot|stow|unstow)
+				call_starlink "$2"
+				;;
+			*)
+				echo '{"error":"unknown method"}'
+				exit 1
+				;;
+		esac
+		;;
+	*)
+		echo '{"error":"usage: list|call <method>"}'
+		exit 1
+		;;
+esac
