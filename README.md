@@ -5,12 +5,33 @@ Lightweight OpenWrt LuCI application for local Starlink dish telemetry.
 The package talks directly to the Starlink dish gRPC API and exposes the data in
 LuCI through an rpcd bridge. It is designed to run on OpenWrt without Node.js.
 
+## Quick Install
+
+On the OpenWrt router:
+
+```sh
+cd /tmp
+wget https://github.com/timmchugh11/openwrt-luci-app-starlink/releases/download/v0.1.0-r6/luci-app-starlink-0.1.0-r6.apk
+apk update
+apk add --allow-untrusted /tmp/luci-app-starlink-0.1.0-r6.apk
+rm -rf /tmp/luci-*
+/etc/init.d/rpcd restart
+/etc/init.d/uhttpd restart
+```
+
+Then open LuCI:
+
+```text
+Services -> Starlink
+```
+
 ## Features
 
 - LuCI pages under `Services -> Starlink`.
 - Live dish status, hardware/software info, alerts, obstruction summary, and
   alignment summary.
 - Recent history charts for downlink, uplink, latency, and packet loss.
+- 3D obstruction/alignment map using Three.js and the Starlink Mini dish model.
 - In-place telemetry refresh every 5 seconds.
 - Chart hover tooltips with value, timestamp, and relative sample age.
 - Dish actions for reboot, stow, and unstow.
@@ -20,7 +41,7 @@ LuCI through an rpcd bridge. It is designed to run on OpenWrt without Node.js.
 ## Package
 
 ```text
-luci-app-starlink 0.1.0-r3
+luci-app-starlink 0.1.0-r6
 ```
 
 Default dish endpoint:
@@ -54,7 +75,12 @@ package/luci-app-starlink/
     usr/share/luci/menu.d/luci-app-starlink.json
     usr/share/rpcd/acl.d/luci-app-starlink.json
     www/luci-static/resources/view/starlink/status.js
+    www/luci-static/resources/view/starlink/map.js
     www/luci-static/resources/view/starlink/settings.js
+    www/luci-static/resources/starlink/
+      obstruction-3d.js
+      models/starlink_mini_dish.glb
+      vendor/three/
 ```
 
 ## Build
@@ -91,17 +117,19 @@ From this repository root:
 docker run --rm -v "${PWD}:/feed" ubuntu:24.04 bash -lc "set -euo pipefail; apt-get update >/dev/null; DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ca-certificates curl wget zstd tar make gcc g++ libc6-dev file python3 unzip rsync patch perl git gawk gettext libssl-dev xz-utils bzip2 libncurses-dev >/dev/null; useradd -m builder; cd /home/builder; curl -fL -o sdk.tar.zst https://downloads.openwrt.org/releases/25.12.4/targets/x86/64/openwrt-sdk-25.12.4-x86-64_gcc-14.3.0_musl.Linux-x86_64.tar.zst; tar --zstd -xf sdk.tar.zst; cd openwrt-sdk-*; echo 'src-link starlink /feed' >> feeds.conf.default; chown -R builder:builder /home/builder; su builder -c './scripts/feeds update packages starlink'; su builder -c './scripts/feeds install luci-app-starlink'; su builder -c 'make defconfig'; su builder -c 'make package/luci-app-starlink/compile V=s'; mkdir -p /feed/dist; find bin -type f \( -name '*luci-app-starlink*.apk' -o -name '*luci-app-starlink*.ipk' \) -print0 | xargs -0 -I{} cp {} /feed/dist/; find /feed/dist -maxdepth 1 -type f -name '*luci-app-starlink*'"
 ```
 
-## Install
+## Manual Install
 
 OpenWrt 25.12 uses `apk`.
 
+Download the release on another machine and copy it to the router:
+
 ```powershell
-scp -O .\dist\luci-app-starlink-0.1.0-r3.apk root@192.168.1.1:/tmp/
+scp -O .\dist\luci-app-starlink-0.1.0-r6.apk root@192.168.1.1:/tmp/
 ```
 
 ```sh
 apk update
-apk add --allow-untrusted /tmp/luci-app-starlink-0.1.0-r3.apk
+apk add --allow-untrusted /tmp/luci-app-starlink-0.1.0-r6.apk
 rm -rf /tmp/luci-*
 /etc/init.d/rpcd restart
 /etc/init.d/uhttpd restart
@@ -109,6 +137,19 @@ rm -rf /tmp/luci-*
 
 The `-O` flag forces legacy SCP mode, which is useful on OpenWrt systems that
 do not provide an SFTP server.
+
+## LuCI Pages
+
+```text
+Services -> Starlink -> Status
+Services -> Starlink -> Map
+Services -> Starlink -> Settings
+```
+
+The `Status` page shows compact live metrics and history charts. The `Map` page
+loads Three.js only when opened and renders the obstruction map, compass ring,
+actual dish orientation, and desired dish orientation using the bundled Starlink
+Mini dish model.
 
 ## CLI
 
@@ -147,6 +188,7 @@ JavaScript syntax checks:
 
 ```sh
 node --check package/luci-app-starlink/files/www/luci-static/resources/view/starlink/status.js
+node --check package/luci-app-starlink/files/www/luci-static/resources/view/starlink/map.js
 node --check package/luci-app-starlink/files/www/luci-static/resources/view/starlink/settings.js
 ```
 

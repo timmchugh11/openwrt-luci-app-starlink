@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-starlink
 PKG_VERSION:=0.1.0
-PKG_RELEASE:=3
+PKG_RELEASE:=6
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_BUILD_DEPENDS:=golang/host
@@ -49,6 +49,19 @@ define Package/luci-app-starlink/install
 	$(INSTALL_DIR) $(1)/www/luci-static/resources/view/starlink
 	$(INSTALL_DATA) ./files/www/luci-static/resources/view/starlink/status.js $(1)/www/luci-static/resources/view/starlink/status.js
 	$(INSTALL_DATA) ./files/www/luci-static/resources/view/starlink/settings.js $(1)/www/luci-static/resources/view/starlink/settings.js
+	$(INSTALL_DATA) ./files/www/luci-static/resources/view/starlink/map.js $(1)/www/luci-static/resources/view/starlink/map.js
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/starlink
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/obstruction-3d.js $(1)/www/luci-static/resources/starlink/obstruction-3d.js
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/starlink/models
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/models/starlink_mini_dish.glb $(1)/www/luci-static/resources/starlink/models/starlink_mini_dish.glb
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/starlink/vendor/three/build
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/vendor/three/build/three.core.js $(1)/www/luci-static/resources/starlink/vendor/three/build/three.core.js
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/vendor/three/build/three.module.js $(1)/www/luci-static/resources/starlink/vendor/three/build/three.module.js
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/starlink/vendor/three/examples/jsm/loaders
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/vendor/three/examples/jsm/loaders/GLTFLoader.js $(1)/www/luci-static/resources/starlink/vendor/three/examples/jsm/loaders/GLTFLoader.js
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/starlink/vendor/three/examples/jsm/utils
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/vendor/three/examples/jsm/utils/BufferGeometryUtils.js $(1)/www/luci-static/resources/starlink/vendor/three/examples/jsm/utils/BufferGeometryUtils.js
+	$(INSTALL_DATA) ./files/www/luci-static/resources/starlink/vendor/three/examples/jsm/utils/SkeletonUtils.js $(1)/www/luci-static/resources/starlink/vendor/three/examples/jsm/utils/SkeletonUtils.js
 endef
 
 $(eval $(call GoBinPackage,luci-app-starlink))

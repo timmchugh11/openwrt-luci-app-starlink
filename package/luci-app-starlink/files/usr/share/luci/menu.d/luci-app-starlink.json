@@ -20,6 +20,17 @@
 			"acl": [ "luci-app-starlink" ]
 		}
 	},
+	"admin/services/starlink/map": {
+		"title": "Map",
+		"order": 7,
+		"action": {
+			"type": "view",
+			"path": "starlink/map"
+		},
+		"depends": {
+			"acl": [ "luci-app-starlink" ]
+		}
+	},
 	"admin/services/starlink/settings": {
 		"title": "Settings",
 		"order": 10,
