@@ -175,7 +175,7 @@ function applyData(data) {
 	setText('sl-map-untracked', untracked.toLocaleString());
 	setText('sl-map-actual', '%s / %s'.format(number(aAz, 1), number(aEl, 1)));
 	setText('sl-map-desired', '%s / %s'.format(number(dAz, 1), number(dEl, 1)));
-	setText('sl-map-obstruction', blocked > 0 || obsStats.currentlyObstructed === true || alerts.obstructed === true ? _('Obstructed') : _('Clear'));
+	setText('sl-map-obstruction', obsStats.currentlyObstructed === true || alerts.obstructed === true || alerts.roofObstruction === true || alerts.fresnelZoneObstruction === true ? _('Obstructed') : _('Clear'));
 	setText('sl-map-updated', _('Updated %s').format(new Date().toLocaleTimeString()));
 
 	renderMap();

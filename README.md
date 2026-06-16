@@ -11,9 +11,9 @@ On the OpenWrt router:
 
 ```sh
 cd /tmp
-wget https://github.com/timmchugh11/openwrt-luci-app-starlink/releases/download/v0.1.0-r6/luci-app-starlink-0.1.0-r6.apk
+wget https://github.com/timmchugh11/openwrt-luci-app-starlink/releases/download/v0.2.0-r1/luci-app-starlink-0.2.0-r1.apk
 apk update
-apk add --allow-untrusted /tmp/luci-app-starlink-0.1.0-r6.apk
+apk add --allow-untrusted /tmp/luci-app-starlink-0.2.0-r1.apk
 rm -rf /tmp/luci-*
 /etc/init.d/rpcd restart
 /etc/init.d/uhttpd restart
@@ -41,7 +41,7 @@ Services -> Starlink
 ## Package
 
 ```text
-luci-app-starlink 0.1.0-r6
+luci-app-starlink 0.2.0-r1
 ```
 
 Default dish endpoint:
@@ -124,12 +124,12 @@ OpenWrt 25.12 uses `apk`.
 Download the release on another machine and copy it to the router:
 
 ```powershell
-scp -O .\dist\luci-app-starlink-0.1.0-r6.apk root@192.168.1.1:/tmp/
+scp -O .\dist\luci-app-starlink-0.2.0-r1.apk root@192.168.1.1:/tmp/
 ```
 
 ```sh
 apk update
-apk add --allow-untrusted /tmp/luci-app-starlink-0.1.0-r6.apk
+apk add --allow-untrusted /tmp/luci-app-starlink-0.2.0-r1.apk
 rm -rf /tmp/luci-*
 /etc/init.d/rpcd restart
 /etc/init.d/uhttpd restart
