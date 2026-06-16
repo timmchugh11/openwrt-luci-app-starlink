@@ -7,6 +7,10 @@ LuCI through an rpcd bridge. It is designed to run on OpenWrt without Node.js.
 
 ## Quick Install
 
+The release APK is target-specific. The current published APK was built with
+the OpenWrt `25.12.4 x86/64` SDK and is intended for x86/64 routers only.
+Other router targets need their own build from the matching OpenWrt SDK.
+
 On the OpenWrt router:
 
 ```sh
@@ -24,6 +28,21 @@ Then open LuCI:
 ```text
 Services -> Starlink
 ```
+
+## Network Access
+
+The OpenWrt router must be able to reach the Starlink dish directly. By default
+this package connects to:
+
+```text
+192.168.100.1:9200
+```
+
+Make sure your routing and firewall rules allow traffic from the router to the
+dish management address. If the router WAN interface is connected through the
+Starlink router or bypass mode, this usually means allowing outbound traffic to
+`192.168.100.1` on TCP port `9200` and ensuring the route to `192.168.100.1`
+exists.
 
 ## Features
 
@@ -86,6 +105,18 @@ package/luci-app-starlink/
 ## Build
 
 Use an OpenWrt SDK that matches the router target and release.
+
+This package is architecture-dependent because it includes the compiled Go
+backend at `/usr/bin/starlink-dish`. The LuCI JavaScript and static files are
+portable, but the final APK must be built separately for each OpenWrt target.
+
+Example target-specific release names:
+
+```text
+luci-app-starlink-0.2.0-r1-x86-64.apk
+luci-app-starlink-0.2.0-r1-mediatek-filogic.apk
+luci-app-starlink-0.2.0-r1-ramips-mt7621.apk
+```
 
 This package has been built against:
 
