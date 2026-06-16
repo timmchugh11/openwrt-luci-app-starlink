@@ -1,4 +1,4 @@
-module github.com/timmc/openwrt-luci-app-starlink
+module github.com/timmchugh11/openwrt-luci-app-starlink
 
 go 1.24.0
 

@@ -10,8 +10,8 @@ PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16
 PKG_LICENSE:=GPL-3.0-or-later
 
-GO_PKG:=github.com/timmc/openwrt-luci-app-starlink
-GO_PKG_BUILD_PKG:=github.com/timmc/openwrt-luci-app-starlink/cmd/starlink-dish
+GO_PKG:=github.com/timmchugh11/openwrt-luci-app-starlink
+GO_PKG_BUILD_PKG:=github.com/timmchugh11/openwrt-luci-app-starlink/cmd/starlink-dish
 GO_PKG_LDFLAGS_X:=main.version=$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
